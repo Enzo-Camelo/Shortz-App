@@ -7,6 +7,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 var indexRouter = require('./routes/index');
 var userRoutes = require("./modules/user/userRoutes");
+var videoRoutes = require("./modules/video/videoRoutes");
 
 var app = express();
 var expressLayouts = require("express-ejs-layouts");
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/", indexRouter);
 app.use("/", userRoutes);
+app.use("/", videoRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -58,9 +60,10 @@ app.use(function(err, req, res, next) {
 const sequelize = require('./config/database');
 // Importa o modelo User para sincronização
 const user = require('./modules/user/userModel');
+const Video = require("./modules/video/videoModel");
 // Sincroniza o modelo com o banco de dados
 sequelize.sync({ alter: true })
     .then(() => console.log('Banco de dados sincronizado!'))
     .catch(err => console.error('Erro ao sincronizar banco:', err));
 
-module.exports = app;   // <------ última linha do arquivo app.js
+module.exports = app;
